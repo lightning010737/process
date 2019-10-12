@@ -1,0 +1,48 @@
+名詞
+{
+	Threat_Spectrum 威脅譜
+	Acute_Injury 急性傷害
+	Survivability_Measures 生存措施
+	Standoff/Offload 裝載卸載
+	Disruptions 推論
+	Sources 資源
+	METT_TC 命令優先級
+	Extended_Operations 拓展操作(use_case)
+	Operation_Of_Area 區域運營(use_case)
+	Mission_Effectiveness 任務效能
+	Vulnerability 脆弱性
+	Mobility 流動性
+	Physical/Mental_Agility 身心理狀態
+	Weight_and_Volume 重量和體積
+	Chronic_Injury 慢性傷害
+}
+
+定義
+{
+	Threat_Spectrum (=def) Weapons | Blast | Fire | Inset/Disease | Weather | CB
+	Survivability_Measures (=def) Equipement | Clothing | Protecive_Measures | Training
+	Standoff/Offload (=def) UGS | UAS | Sensors | Airdrop | Firepower
+	Disruptions (=def) Change | Hazards | Loss | Perturbation | Denial
+	Sources (=def) Technological | Organizational | Natural | Enemy
+	METT_TC (=def) "quantified_in".Threat_Spectrum
+}
+
+行為
+{
+	Soldier = perform.Extended_Operations + encounter_broad.Threat_Spectrum
+	METT_TC = drives.Leaders
+	Leaders = to_ID_and_decide.Survivability_Measures
+	Threat_Spectrum =  require_sufficient.Survivability_Measures
+	Extended_Operations = requires_more.Survivability_Measures + may_require.Standoff/Offload + over_a_greater.Operation_Of_Area
+	Operation_Of_Area = increase_potential_for.Disruptions
+	Acute_Injury = immediately_removes.Soldier + reduces.Mission_Effectiveness + increases_perceived_need_for_increased.Survivability_Measures
+	Vulnerability = (to_reduce_potential + in_order_to_absorb_or_limit).Disruptions
+	Mobility = increases.Mission_Effectiveness
+	Physical/Mental_Agility = increases.Mission_Effectiveness
+	Disruptions = while_maintaining.Mission_Effectiveness
+	Mission_Effectiveness = increases_exposure_and_risk_to.Standoff/Offload
+	Weight_and_Volume = (decrease increases + excess_reduces).Mobility + excess_reduces.Physical/Mental_Agility + (excess_increases + reduction_decreases_potential_for).Chronic_Injury
+	Chronic_Injury = causes_long_term_loss_of.Mission_Effectiveness
+	Standoff/Offload = (decrease_need_for + decreasing_need).Survivability_Measures + to_reduce_potential.Chronic_Injury + potentially_increases.Operation_Of_Area + prioritized_to_minimize.Vulnerability
+	Survivability_Measures = requires_less.Extended_Operations + consume.Weight_and_Volume + excess_increases_potential.Chronic_Injury + reduction_increases_potential_for.Acute_Injury
+}
